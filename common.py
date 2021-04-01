@@ -1,9 +1,10 @@
 import datetime
 import json
+import os
 
 from binance.client import Client
 
-from google_sheets import update_data_in_table
+from google_sheets import update_data_in_table, init_sheet
 from settings import BINANCE_API_KEY, BINANCE_API_SECRET
 
 
@@ -42,9 +43,19 @@ def save_prices(currency, prices, project_name):
         'extra_charge': daily_extra_charge
     }
 
-    with open('data/%s.json' % project_name, 'r+') as localBTCruFile:
+    file_path = 'data/%s.json' % project_name
+    if not os.path.exists(file_path):
+        new_file = open(file_path, "w")
+        new_file.write('')
+        new_file.close()
+
+    is_new = False
+
+    with open(file_path, 'r+') as localBTCruFile:
         files_data = localBTCruFile.read()
-        if files_data:
+        if not files_data:
+            is_new = True
+        if not is_new:
             local_bitcoins_dict = json.loads(files_data)
         else:
             local_bitcoins_dict = {'common_extra_charge': 0}
@@ -54,7 +65,7 @@ def save_prices(currency, prices, project_name):
             localBTCruFile.close()
             return local_bitcoins_dict['common_extra_charge']
 
-        if files_data:
+        if not is_new:
             sum = 0
             for key in local_bitcoins_dict.keys():
                 if key == 'common_extra_charge':
@@ -63,10 +74,9 @@ def save_prices(currency, prices, project_name):
                     sum += float(local_bitcoins_dict[key]['extra_charge'])
 
             common_extra_charge = sum / (len(local_bitcoins_dict) - 1)
+            update_data_in_table(project_name, current_date_dict, current_datetime, common_extra_charge)
         else:
             common_extra_charge = daily_extra_charge
-
-        update_data_in_table(project_name, current_date_dict, current_datetime, common_extra_charge)
 
         print('common_extra_charge: ' + str(common_extra_charge))
 
@@ -76,17 +86,25 @@ def save_prices(currency, prices, project_name):
         localBTCruFile.truncate()
         localBTCruFile.write(json.dumps(local_bitcoins_dict))
         localBTCruFile.close()
+    if is_new:
+        init_sheet(project_name)
     return common_extra_charge
 
 PLATFORM_NAMES = {
     'bitzlato_ru': 'bitzlato_ru',
     'bitzlato_usd': 'bitzlato_usd',
+    'bitzlato_eur': 'bitzlato_eur',
+    'bitzlato_gbp': 'bitzlato_gbp',
     'local_bitcoin_eur': 'local_bitcoin_eur',
     'local_bitcoin_gb': 'local_bitcoin_gb',
     'local_bitcoin_usd': 'local_bitcoin_usd',
     'local_bitcoin_ru': 'local_bitcoin_ru',
     'local_coins_swap_ru': 'local_coins_swap_ru',
     'local_coins_swap_usd': 'local_coins_swap_usd',
+    'local_coins_swap_gbp': 'local_coins_swap_gbp',
+    'local_coins_swap_eur': 'local_coins_swap_eur',
     'paxful_ru': 'paxful_ru',
     'paxful_usd': 'paxful_usd',
+    'paxful_eur': 'paxful_eur',
+    'paxful_gbp': 'paxful_gbp',
 }

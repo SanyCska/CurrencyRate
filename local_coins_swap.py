@@ -24,11 +24,30 @@ def local_coins_swap_main():
     local_coins_swap_extra_charges.append([
         usa_desc, usa_extra_charge
     ])
+
     ru_desc = 'localCoinsSwap russian sellers'
     print(ru_desc)
     ru_prices = get_local_coins_swap_prices('https://localcoinswap.com/ru/buy/BTC/russian-federation/all-payments?buy-sort=current_price_usd&fiat-currency=RUB&country-code=RU&hide-new=1')
     ru_extra_charge = save_prices('RUB', ru_prices, PLATFORM_NAMES['local_coins_swap_ru'])
     local_coins_swap_extra_charges.append([
         ru_desc, ru_extra_charge
+    ])
+
+    gbp_desc = 'localCoinsSwap british sellers'
+    print(gbp_desc)
+    gbp_prices = get_local_coins_swap_prices(
+        'https://localcoinswap.com/ru/buy/BTC/united-kingdom/all-payments?buy-sort=current_price_usd&fiat-currency=GBP&country-code=GB&hide-new=1')
+    gbp_extra_charge = save_prices('GBP', gbp_prices, PLATFORM_NAMES['local_coins_swap_gbp'])
+    local_coins_swap_extra_charges.append([
+        gbp_desc, gbp_extra_charge
+    ])
+
+    eur_desc = 'localCoinsSwap euro sellers'
+    print(eur_desc)
+    eur_prices = get_local_coins_swap_prices(
+        'https://localcoinswap.com/ru/buy/BTC/worldwide/all-payments?buy-sort=current_price_usd&fiat-currency=EUR&hide-new=1')
+    eur_extra_charge = save_prices('EUR', eur_prices, PLATFORM_NAMES['local_coins_swap_eur'])
+    local_coins_swap_extra_charges.append([
+        eur_desc, eur_extra_charge
     ])
     return local_coins_swap_extra_charges

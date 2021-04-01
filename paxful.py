@@ -10,8 +10,6 @@ import requests  # pip install requests
 def get_paxful_prices(params):
 
     API_URL = "https://paxful.com/api/offer/all"
-    # API_KEY = 'MnTsffjhdR9jZftBztLcypXtbbQhCAAp'
-    # API_SECRET = "FFNIny1mX61dZAvWDI94seMxAsE4NTIC"
     # nonce = int(time.time())
     #
     # payload = {"apikey": API_KEY, "nonce": nonce}
@@ -36,11 +34,28 @@ def paxful_main():
     paxful_extra_charges.append([
         usa_desc, usa_extra_charge
     ])
+
     ru_desc = 'paxful russian sellers'
     print(ru_desc)
     ru_prices = get_paxful_prices('&offer_type=buy&currency_code=RUB')
     ru_extra_charge = save_prices('RUB', ru_prices, PLATFORM_NAMES['paxful_ru'])
     paxful_extra_charges.append([
         ru_desc, ru_extra_charge
+    ])
+
+    gbp_desc = 'paxful british sellers'
+    print(gbp_desc)
+    gbp_prices = get_paxful_prices('&offer_type=buy&currency_code=GBP')
+    gbp_extra_charge = save_prices('GBP', gbp_prices, PLATFORM_NAMES['paxful_gbp'])
+    paxful_extra_charges.append([
+        gbp_desc, gbp_extra_charge
+    ])
+
+    eur_desc = 'paxful euro sellers'
+    print(eur_desc)
+    eur_prices = get_paxful_prices('&offer_type=buy&currency_code=EUR')
+    eur_extra_charge = save_prices('EUR', eur_prices, PLATFORM_NAMES['paxful_eur'])
+    paxful_extra_charges.append([
+        eur_desc, eur_extra_charge
     ])
     return paxful_extra_charges

@@ -27,9 +27,22 @@ def bitzlato_main():
     bitzlato_extra_charges.append([
         ru_desc, ru_extra_charge
     ])
+
     usa_desc = 'bitzlato usa sellers'
     print(usa_desc)
     us_prices = get_bitzlato_prices('https://bitzlato.bz/p2p?currency=USD&isOwnerActive=true')
     usa_extra_charge = save_prices('BUSD', us_prices, PLATFORM_NAMES['bitzlato_usd'])
     bitzlato_extra_charges.append([usa_desc, usa_extra_charge])
+
+    eur_desc = 'bitzlato euro sellers'
+    print(eur_desc)
+    eur_prices = get_bitzlato_prices('https://bitzlato.bz/p2p?currency=USD&isOwnerActive=true')
+    eur_extra_charge = save_prices('EUR', eur_prices, PLATFORM_NAMES['bitzlato_eur'])
+    bitzlato_extra_charges.append([eur_desc, eur_extra_charge])
+
+    gbp_desc = 'bitzlato british sellers'
+    print(gbp_desc)
+    gbp_prices = get_bitzlato_prices('https://bitzlato.bz/p2p?currency=GBP&isOwnerActive=true')
+    gbp_extra_charge = save_prices('GBP', gbp_prices, PLATFORM_NAMES['bitzlato_gbp'])
+    bitzlato_extra_charges.append([gbp_desc, gbp_extra_charge])
     return bitzlato_extra_charges

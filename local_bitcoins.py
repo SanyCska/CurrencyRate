@@ -102,4 +102,5 @@ def local_bitcoins_main():
     local_bitcoins_extra_charges.append([
         eu_desc, eu_extra_charge
     ])
+
     return local_bitcoins_extra_charges
